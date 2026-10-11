@@ -1,0 +1,830 @@
+{
+ "round": "Round 1 - parents of preschool children, flu vaccine (12 interviews)",
+ "themes": [
+  {
+   "id": "T01",
+   "name": "Parents who wanted the vaccine couldn't get it",
+   "description": "Several parents wanted their preschool child vaccinated but were held up by vaccine shortages, no reply from the practice, having no GP, or a delivery route (school) that didn't fit their child. Some kept chasing; others gave up as the season moved on.",
+   "supporting": [
+    "P01-15",
+    "P01-16",
+    "P01-17",
+    "P02-15",
+    "P02-16",
+    "P02-18",
+    "P02-19",
+    "P03-17",
+    "P03-19",
+    "P03-20",
+    "P03-22",
+    "P03-23",
+    "P03-24",
+    "P06-19",
+    "P06-20",
+    "P10-23",
+    "P11-09",
+    "P11-10",
+    "P11-12",
+    "P11-16",
+    "P11-23",
+    "P11-25",
+    "P11-36",
+    "P03-18",
+    "P03-31",
+    "P03-33",
+    "P06-16",
+    "P11-18"
+   ],
+   "key_quotes": [
+    "P02-15",
+    "P03-19",
+    "P11-12",
+    "P06-20"
+   ],
+   "counter": [
+    "P05-19",
+    "P07-13",
+    "P09-14",
+    "P12-15"
+   ],
+   "counter_summary": "Four parents (all vaccinated) describe a quick, easy letter-call-appointment process.",
+   "prompts": [
+    "Which of these barriers sit with the practice, and which with national supply?",
+    "How do the parents who kept chasing differ from those who stopped?",
+    "What does this data not tell us about families who were never invited at all?"
+   ]
+  },
+  {
+   "id": "T02",
+   "name": "Whether it happens often depends on a letter or reminder arriving",
+   "description": "Parents describe acting on invitation letters and texts, and relying on them as reminders. Where no invitation came, vaccination did not happen or the parent chased it; one parent was never offered it and didn't realise the child was eligible.",
+   "supporting": [
+    "P04-20",
+    "P04-22",
+    "P04-24",
+    "P07-12",
+    "P07-14",
+    "P12-17",
+    "P05-17",
+    "P09-13",
+    "P08-18",
+    "P11-23",
+    "P02-22",
+    "P04-23"
+   ],
+   "key_quotes": [
+    "P04-22",
+    "P12-17",
+    "P07-14"
+   ],
+   "counter": [
+    "P07-11",
+    "P05-18",
+    "P03-17"
+   ],
+   "counter_summary": "Some parents sought vaccination before, or regardless of, an invitation.",
+   "prompts": [
+    "What happens for families whose circumstances fall outside the invitation system?",
+    "How much does the reminder matter for parents who are already keen?",
+    "Besides a letter, what prompted parents to act?"
+   ]
+  },
+  {
+   "id": "T03",
+   "name": "Appointment times assume a parent is free during working hours",
+   "description": "Fixed or short clinic windows on weekday mornings clashed with work, nursery or playgroup. Parents who managed it describe leaving work early, using grandparents or having flexible jobs; two parents missed the window.",
+   "supporting": [
+    "P06-17",
+    "P06-18",
+    "P06-21",
+    "P10-03",
+    "P10-17",
+    "P10-23",
+    "P10-24",
+    "P11-17",
+    "P05-19",
+    "P12-16"
+   ],
+   "key_quotes": [
+    "P06-17",
+    "P10-23",
+    "P11-17"
+   ],
+   "counter": [
+    "P12-13",
+    "P09-14"
+   ],
+   "counter_summary": "Parents with flexible work or a partner available describe few problems fitting the appointment in.",
+   "prompts": [
+    "Who in the household is expected to take the child to the appointment?",
+    "Which families are most affected by a single weekday clinic?",
+    "What do the parents who got there have in common?"
+   ]
+  },
+  {
+   "id": "T04",
+   "name": "Age cut-offs are read as a sign of risk, and some don't fit how families live",
+   "description": "Parents were often unsure of the eligibility age. Some took ineligibility as a sign their child wasn't at risk; others found the cut-off frustrating because their child was already in childcare, or were refused a slot because the child wasn't in a priority group.",
+   "supporting": [
+    "P08-07",
+    "P08-22",
+    "P08-23",
+    "P08-24",
+    "P08-32",
+    "P12-09",
+    "P04-21",
+    "P03-19",
+    "P03-21",
+    "P07-11",
+    "P05-12",
+    "P05-28",
+    "P08-21",
+    "P11-24"
+   ],
+   "key_quotes": [
+    "P08-22",
+    "P08-23",
+    "P03-19"
+   ],
+   "counter": [],
+   "counter_summary": "None found.",
+   "prompts": [
+    "How do parents find out which age group qualifies?",
+    "What do parents take eligibility to mean about their child's risk?",
+    "Where does a parent's own sense of risk differ from the rules?"
+   ]
+  },
+  {
+   "id": "T05",
+   "name": "Parents' own flu vaccination follows eligibility and workplace offers",
+   "description": "Most parents had their own flu vaccine only when they were in an eligible group (pregnancy, surgery, a health condition) or when an employer offered it. Two pay for it themselves every year.",
+   "supporting": [
+    "P01-21",
+    "P01-22",
+    "P02-23",
+    "P03-30",
+    "P04-28",
+    "P06-23",
+    "P08-02",
+    "P08-29",
+    "P08-30",
+    "P10-02",
+    "P10-28",
+    "P12-02",
+    "P05-16"
+   ],
+   "key_quotes": [
+    "P08-30",
+    "P03-30",
+    "P10-28"
+   ],
+   "counter": [
+    "P07-16",
+    "P09-17",
+    "P09-18"
+   ],
+   "counter_summary": "Two parents seek it out and pay for it themselves.",
+   "prompts": [
+    "How does parents' own uptake relate to what they do for their child?",
+    "What role do employers play here?",
+    "What would make the vaccine feel relevant to a parent outside an eligible group?"
+   ]
+  },
+  {
+   "id": "T06",
+   "name": "Flu feels like an ordinary illness for a healthy child",
+   "description": "Most parents are not especially worried about their preschool child getting flu. They describe their children as healthy, flu as unavoidable or manageable at home, and serious risk as belonging to babies, older people or those with health conditions.",
+   "supporting": [
+    "P02-02",
+    "P02-03",
+    "P03-02",
+    "P04-05",
+    "P07-02",
+    "P08-05",
+    "P08-06",
+    "P09-03",
+    "P10-05",
+    "P11-05",
+    "P12-05",
+    "P10-29"
+   ],
+   "key_quotes": [
+    "P02-02",
+    "P09-03",
+    "P11-05"
+   ],
+   "counter": [
+    "P06-03",
+    "P01-04",
+    "P07-04"
+   ],
+   "counter_summary": "Parents whose children have health conditions or a history of chest problems describe more concern.",
+   "prompts": [
+    "How does low worry about flu sit alongside willingness to vaccinate?",
+    "Who in these families is seen as at risk?",
+    "What would change how serious flu feels for a young child?"
+   ]
+  },
+  {
+   "id": "T07",
+   "name": "Parents are unsure what flu is, and what it looks like in a young child",
+   "description": "'Real flu' is described as rare and debilitating, while the word is used loosely for colds. Several parents say they don't know how flu shows in children or how long it lasts, and doctors tend to call childhood illness 'viral' without naming it.",
+   "supporting": [
+    "P01-01",
+    "P03-01",
+    "P04-01",
+    "P05-01",
+    "P07-01",
+    "P10-01",
+    "P10-30",
+    "P11-03",
+    "P05-04",
+    "P07-03",
+    "P08-08",
+    "P09-04",
+    "P10-06",
+    "P10-12",
+    "P04-04",
+    "P08-04",
+    "P11-26"
+   ],
+   "key_quotes": [
+    "P10-30",
+    "P08-08",
+    "P04-04"
+   ],
+   "counter": [
+    "P11-04",
+    "P06-05"
+   ],
+   "counter_summary": "Two parents describe specific cues they use to tell flu from a cold.",
+   "prompts": [
+    "How does uncertainty about flu affect how parents weigh the vaccine?",
+    "Where would parents expect to learn what flu looks like in a child?",
+    "What does 'real flu' mean to these parents?"
+   ]
+  },
+  {
+   "id": "T08",
+   "name": "Parents judge illness by behaviour because young children can't say what's wrong",
+   "description": "Parents read illness through changes in energy, mood, eating and response to Calpol, because young children can't describe their symptoms. Some say this makes early signs easy to miss.",
+   "supporting": [
+    "P01-06",
+    "P01-07",
+    "P03-03",
+    "P03-05",
+    "P04-03",
+    "P05-05",
+    "P06-05",
+    "P09-02",
+    "P10-10",
+    "P11-04",
+    "P02-10"
+   ],
+   "key_quotes": [
+    "P01-06",
+    "P04-03",
+    "P10-10"
+   ],
+   "counter": [],
+   "counter_summary": "None found.",
+   "prompts": [
+    "How confident are parents in their own judgement here?",
+    "At what point do parents seek help, and how do they decide?",
+    "How does this compare with how professionals assess a sick child?"
+   ]
+  },
+  {
+   "id": "T09",
+   "name": "The NHS website is the trusted default; other sources are used with care",
+   "description": "Nearly every parent goes to the NHS website first because it is seen as accurate and UK-relevant. Some also check international medical sites, research papers, relatives who are nurses, or 111. Parent forums are avoided for health facts but used for practical tips and to sense-check worries.",
+   "supporting": [
+    "P02-06",
+    "P03-09",
+    "P04-07",
+    "P04-08",
+    "P05-06",
+    "P06-06",
+    "P07-05",
+    "P08-09",
+    "P08-19",
+    "P09-05",
+    "P10-07",
+    "P11-06",
+    "P12-08",
+    "P03-15",
+    "P11-07",
+    "P04-10",
+    "P11-01",
+    "P05-13",
+    "P01-09",
+    "P03-07",
+    "P03-08",
+    "P08-10",
+    "P04-12",
+    "P04-11",
+    "P09-06"
+   ],
+   "key_quotes": [
+    "P07-05",
+    "P11-07",
+    "P04-10"
+   ],
+   "counter": [
+    "P01-08"
+   ],
+   "counter_summary": "One parent starts with a general internet search rather than the NHS site.",
+   "prompts": [
+    "Which sources do parents use for facts, and which for reassurance?",
+    "How do parents without a nurse in the family or a research background fare?",
+    "What part do printed materials such as the parent booklet play?"
+   ]
+  },
+  {
+   "id": "T10",
+   "name": "There is little conversation about flu with health professionals",
+   "description": "Few parents have discussed flu or the flu vaccine with a GP or nurse. Information mostly arrives in writing with the invitation, and conversations happen briefly at the vaccination appointment, if at all. Contact with health visitors fades after infancy.",
+   "supporting": [
+    "P02-13",
+    "P02-14",
+    "P05-07",
+    "P05-15",
+    "P04-18",
+    "P10-11",
+    "P10-19",
+    "P12-07",
+    "P12-14",
+    "P08-17",
+    "P01-11",
+    "P03-11",
+    "P02-08",
+    "P08-12",
+    "P05-14",
+    "P04-19",
+    "P10-08",
+    "P05-29",
+    "P02-07"
+   ],
+   "key_quotes": [
+    "P10-11",
+    "P08-17",
+    "P02-14"
+   ],
+   "counter": [
+    "P06-07",
+    "P11-08",
+    "P07-11"
+   ],
+   "counter_summary": "Parents with a specific question (allergy, shortage, prematurity) did contact professionals.",
+   "prompts": [
+    "What would a parent with questions do in this system?",
+    "Which moments of contact with professionals exist, and what happens in them?",
+    "How does written information compare with a conversation for these parents?"
+   ]
+  },
+  {
+   "id": "T11",
+   "name": "Vaccines are accepted on trust in the NHS and medical experts",
+   "description": "Many parents accept vaccines because they trust the NHS, the schedule and experts' judgement, and see little reason to research further. Some link this trust to relatives in nursing or to vaccines being long established; a new, fast-developed vaccine would get more scrutiny.",
+   "supporting": [
+    "P07-08",
+    "P07-09",
+    "P07-19",
+    "P07-20",
+    "P08-22",
+    "P08-28",
+    "P04-16",
+    "P04-25",
+    "P03-12",
+    "P01-18",
+    "P10-18",
+    "P05-13",
+    "P08-20",
+    "P04-29",
+    "P11-21",
+    "P10-27",
+    "P06-08"
+   ],
+   "key_quotes": [
+    "P07-09",
+    "P04-16",
+    "P08-22"
+   ],
+   "counter": [
+    "P11-13",
+    "P06-10"
+   ],
+   "counter_summary": "Two parents describe their trust in GPs being damaged (see T12).",
+   "prompts": [
+    "What is this trust based on for different parents?",
+    "What happens to acceptance when trust is the main reason for it?",
+    "How might new or fast-developed vaccines be treated differently?"
+   ]
+  },
+  {
+   "id": "T12",
+   "name": "Feeling dismissed by professionals leads parents to stop asking",
+   "description": "Some parents describe GPs or health visitors dismissing their concerns, or treating questions as anti-vaccine. They stopped asking the GP and relied on specialists or family instead. One describes even confident parents falling silent in appointments.",
+   "supporting": [
+    "P06-10",
+    "P11-11",
+    "P11-13",
+    "P11-14",
+    "P11-20",
+    "P11-32",
+    "P11-35",
+    "P06-24",
+    "P10-13"
+   ],
+   "key_quotes": [
+    "P11-13",
+    "P06-10",
+    "P11-35"
+   ],
+   "counter": [
+    "P04-09",
+    "P10-27",
+    "P05-14"
+   ],
+   "counter_summary": "Other parents describe GPs and nurses as reassuring and open to questions.",
+   "prompts": [
+    "What does a parent with questions about a vaccine experience in these accounts?",
+    "How common might this be beyond these participants?",
+    "Where do parents turn when they stop asking the GP?"
+   ]
+  },
+  {
+   "id": "T13",
+   "name": "Vaccinating protects other people too",
+   "description": "Many parents describe vaccination as protecting grandparents, vulnerable classmates and the wider community, as well as their own child. Direct contact with a vulnerable person, or news of measles outbreaks, made this more real.",
+   "supporting": [
+    "P03-25",
+    "P03-29",
+    "P04-14",
+    "P04-15",
+    "P06-11",
+    "P06-12",
+    "P06-25",
+    "P06-26",
+    "P08-13",
+    "P08-14",
+    "P12-03",
+    "P12-04",
+    "P12-10",
+    "P02-04",
+    "P05-10",
+    "P10-15",
+    "P05-02"
+   ],
+   "key_quotes": [
+    "P04-15",
+    "P06-26",
+    "P12-03"
+   ],
+   "counter": [
+    "P07-07"
+   ],
+   "counter_summary": "One parent frames the benefit only around their own child.",
+   "prompts": [
+    "How much weight does protecting others carry compared with protecting the child?",
+    "Which people do parents have in mind when they think about others?",
+    "What made this feel real for the parents who mention it?"
+   ]
+  },
+  {
+   "id": "T14",
+   "name": "When a child gets ill, the whole household is affected",
+   "description": "Parents describe illness spreading through the family, time off work, losing grandparent childcare, and sleepless nights. Avoiding this disruption is described as a benefit of the vaccine.",
+   "supporting": [
+    "P04-05",
+    "P04-06",
+    "P05-09",
+    "P05-10",
+    "P08-26",
+    "P06-04",
+    "P02-10",
+    "P02-04"
+   ],
+   "key_quotes": [
+    "P04-06",
+    "P05-09",
+    "P08-26"
+   ],
+   "counter": [],
+   "counter_summary": "None found.",
+   "prompts": [
+    "How does household disruption compare with the child's own illness as a reason to vaccinate?",
+    "Which families feel this most?",
+    "What role do grandparents play in these accounts?"
+   ]
+  },
+  {
+   "id": "T15",
+   "name": "Routine childhood vaccines are 'not a decision'",
+   "description": "Almost every parent says routine childhood vaccination was never really a decision: it is simply what you do, based on trust, upbringing, or memories of serious childhood illness.",
+   "supporting": [
+    "P01-20",
+    "P04-25",
+    "P06-22",
+    "P07-15",
+    "P08-27",
+    "P09-15",
+    "P11-28",
+    "P12-20",
+    "P02-20",
+    "P10-26",
+    "P12-21",
+    "P04-26"
+   ],
+   "key_quotes": [
+    "P01-20",
+    "P07-15",
+    "P11-28"
+   ],
+   "counter": [
+    "P05-20",
+    "P05-21",
+    "P05-25",
+    "P11-29"
+   ],
+   "counter_summary": "One parent delayed MMR after reservations; another chose not to pay for the chickenpox vaccine.",
+   "prompts": [
+    "Does the flu vaccine carry the same status for these parents?",
+    "What makes a vaccine feel routine to these parents?",
+    "Who decides, when it isn't experienced as a decision?"
+   ]
+  },
+  {
+   "id": "T16",
+   "name": "The children's flu vaccine is a lower priority than routine vaccines",
+   "description": "Some parents describe the flu vaccine as a 'bonus', or something they would accept if offered, and acted on it without urgency. How serious a disease feels shapes how necessary its vaccine feels.",
+   "supporting": [
+    "P04-27",
+    "P12-23",
+    "P10-21",
+    "P10-14",
+    "P04-13",
+    "P12-18",
+    "P10-20"
+   ],
+   "key_quotes": [
+    "P10-21",
+    "P04-27",
+    "P12-23"
+   ],
+   "counter": [
+    "P02-18",
+    "P07-14",
+    "P11-27",
+    "P03-17"
+   ],
+   "counter_summary": "Other parents describe the flu vaccine as a clear priority and acted straight away or chased it.",
+   "prompts": [
+    "How does the priority given to the flu vaccine differ between vaccinated and not-vaccinated families?",
+    "What makes a vaccine feel optional?",
+    "How do partners differ in the priority they give it?"
+   ]
+  },
+  {
+   "id": "T17",
+   "name": "Health conditions in the family raise concern about flu",
+   "description": "Parents whose child or family has an underlying condition, a history of chest infections or prematurity, or recent serious illness describe watching more closely and taking flu more seriously.",
+   "supporting": [
+    "P01-04",
+    "P01-05",
+    "P06-02",
+    "P07-04",
+    "P10-05",
+    "P05-03",
+    "P06-03",
+    "P08-25"
+   ],
+   "key_quotes": [
+    "P01-05",
+    "P07-04",
+    "P06-02"
+   ],
+   "counter": [],
+   "counter_summary": "None found.",
+   "prompts": [
+    "How does this group's view of the vaccine compare with others'?",
+    "What role did professionals play for these families?",
+    "How do parents assess their own child's risk?"
+   ]
+  },
+  {
+   "id": "T18",
+   "name": "News and outbreaks raise urgency",
+   "description": "Reports of a bad flu season abroad, local school outbreaks and measles outbreaks are mentioned as raising awareness of, or urgency about, vaccination.",
+   "supporting": [
+    "P03-10",
+    "P03-28",
+    "P08-14",
+    "P11-27",
+    "P05-22",
+    "P12-06"
+   ],
+   "key_quotes": [
+    "P11-27",
+    "P03-28"
+   ],
+   "counter": [],
+   "counter_summary": "None found.",
+   "prompts": [
+    "Which channels carried these stories to parents?",
+    "How long does a burst of urgency last?",
+    "How does COVID fit into this for these parents?"
+   ]
+  },
+  {
+   "id": "T19",
+   "name": "Parents see few downsides beyond brief upset; the nasal spray makes it easier",
+   "description": "Parents mostly name no downsides, or only brief upset for the child and minor side effects; some are sceptical of claims that the vaccine makes you ill. Those whose children had the nasal spray describe it as quick, painless and less upsetting than injections.",
+   "supporting": [
+    "P01-13",
+    "P01-14",
+    "P06-14",
+    "P07-10",
+    "P08-15",
+    "P05-11",
+    "P07-17",
+    "P02-12",
+    "P03-14",
+    "P07-18",
+    "P12-12",
+    "P09-08",
+    "P10-16"
+   ],
+   "key_quotes": [
+    "P01-13",
+    "P08-15",
+    "P03-14"
+   ],
+   "counter": [
+    "P08-16",
+    "P05-12"
+   ],
+   "counter_summary": "One parent didn't know the children's vaccine was a spray; another was unsure why their younger child had an injection.",
+   "prompts": [
+    "How much do downsides figure in the decision at all?",
+    "How much does the form of the vaccine matter to parents?",
+    "What do parents expect the appointment to be like before they go?"
+   ]
+  },
+  {
+   "id": "T20",
+   "name": "Health admin often falls to one parent",
+   "description": "In some households one parent receives the invitations and handles appointments, and parents can differ in how much priority they give the vaccine. One parent notes that letters and appointments seem to assume the mother is available.",
+   "supporting": [
+    "P09-10",
+    "P09-13",
+    "P09-19",
+    "P11-17",
+    "P10-21"
+   ],
+   "key_quotes": [
+    "P09-13",
+    "P11-17"
+   ],
+   "counter": [],
+   "counter_summary": "None found.",
+   "prompts": [
+    "Who receives invitations and information in these families?",
+    "How do parents divide health decisions between them?"
+   ]
+  },
+  {
+   "id": "T21",
+   "name": "The vaccine is seen as partial protection, and still worth having",
+   "description": "Parents know the flu vaccine doesn't cover every strain and isn't a guarantee, but describe it as reducing risk or making illness milder, and as worth having anyway.",
+   "supporting": [
+    "P01-12",
+    "P04-02",
+    "P05-08",
+    "P07-06",
+    "P08-03",
+    "P11-15",
+    "P12-11",
+    "P09-07",
+    "P01-02"
+   ],
+   "key_quotes": [
+    "P11-15",
+    "P07-06",
+    "P05-08"
+   ],
+   "counter": [],
+   "counter_summary": "None found.",
+   "prompts": [
+    "How do parents understand what the vaccine does and doesn't do?",
+    "Does partial protection feel different for a child than for an adult?"
+   ]
+  },
+  {
+   "id": "T22",
+   "name": "Parents who missed out intend to vaccinate next season",
+   "description": "Parents whose child wasn't vaccinated say they will try again or act once the child is eligible; some say the interview itself prompted this. One vaccinated parent says this year's difficulties have made them more proactive.",
+   "supporting": [
+    "P02-17",
+    "P10-04",
+    "P10-22",
+    "P08-24",
+    "P03-32"
+   ],
+   "key_quotes": [
+    "P02-17",
+    "P10-22"
+   ],
+   "counter": [],
+   "counter_summary": "None found.",
+   "prompts": [
+    "How much of this intention was prompted by the interview itself?",
+    "What would turn intention into an appointment next season?"
+   ]
+  },
+  {
+   "id": "T23",
+   "name": "Nursery and childcare make exposure feel more likely",
+   "description": "Parents link nursery and childcare with catching more illnesses, and describe this as raising the value of vaccination or as a reason the age rules feel out of step.",
+   "supporting": [
+    "P03-13",
+    "P05-18",
+    "P08-25",
+    "P08-23"
+   ],
+   "key_quotes": [
+    "P03-13",
+    "P08-25"
+   ],
+   "counter": [],
+   "counter_summary": "None found.",
+   "prompts": [
+    "How does childcare use differ between the vaccinated and not-vaccinated groups?",
+    "What do parents expect the vaccine to protect against in a nursery setting?"
+   ]
+  }
+ ],
+ "outliers": [
+  {
+   "id": "O01",
+   "observation": "A home-schooled child falls outside the school-based route, and the parent couldn't find an alternative.",
+   "excerpts": [
+    "P01-15",
+    "P01-16"
+   ]
+  },
+  {
+   "id": "O02",
+   "observation": "Consent forms carry out-of-date egg-allergy guidance; the parent adds explanations each time.",
+   "excerpts": [
+    "P06-09",
+    "P06-24"
+   ]
+  },
+  {
+   "id": "O03",
+   "observation": "A parent timed a vaccination for when they could watch the child at home, and would keep the child out of nursery afterwards.",
+   "excerpts": [
+    "P05-23",
+    "P05-24"
+   ]
+  },
+  {
+   "id": "O04",
+   "observation": "One parent's elderly parents are anti-vaccine.",
+   "excerpts": [
+    "P03-29"
+   ]
+  },
+  {
+   "id": "O05",
+   "observation": "A parent links being able to decide to health literacy and having trusted people to ask.",
+   "excerpts": [
+    "P11-33",
+    "P11-34"
+   ]
+  },
+  {
+   "id": "O06",
+   "observation": "One parent suggests incentives for areas with lower uptake, and primary care and pharmacies prompting families.",
+   "excerpts": [
+    "P12-22",
+    "P12-24"
+   ]
+  },
+  {
+   "id": "O07",
+   "observation": "One parent leaves vaccine research to their partner and trusts that judgement.",
+   "excerpts": [
+    "P09-11"
+   ]
+  },
+  {
+   "id": "O08",
+   "observation": "Deciding for a child feels weightier than deciding for oneself.",
+   "excerpts": [
+    "P04-30"
+   ]
+  }
+ ]
+}

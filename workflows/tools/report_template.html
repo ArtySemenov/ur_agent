@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>__TITLE__</title>
+<style>
+/* Layout: a research dossier that deepens as you scroll - five levels, each more granular,
+   in one reading column with a sticky level ribbon. Works offline: system fonts, no external files. */
+:root {
+  --bg: #f5f6f8; --surface: #ffffff; --sunken: #eceef2;
+  --ink: #161a21; --ink-2: #454c59; --muted: #646c7a; --line: #dadee5;
+  --accent: #3b3889; --accent-soft: #e8e7f6; --focus: #3b3889;
+  --draft-ink: #7a4a00; --draft-bg: #fff2d6; --draft-line: #e6b85c;
+  --g0: #2a78d6; --g1: #eb6834; --g2: #1baf7a; --g3: #8a919c;
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-data: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, Menlo, monospace;
+  --step--1: 0.8125rem; --step-0: 1rem; --step-1: 1.1875rem; --step-2: 1.5rem; --step-3: 2.125rem; --step-4: 2.75rem;
+  --radius: 6px; --measure: 68ch;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14171c; --surface: #1b1f26; --sunken: #111418;
+    --ink: #eceef2; --ink-2: #bcc2cc; --muted: #8f97a5; --line: #2c323c;
+    --accent: #aaa5f2; --accent-soft: #29274d; --focus: #aaa5f2;
+    --draft-ink: #f3c06a; --draft-bg: #33280f; --draft-line: #7a5a1c;
+    --g0: #3987e5; --g1: #d95926; --g2: #199e70; --g3: #7d8592;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14171c; --surface: #1b1f26; --sunken: #111418;
+  --ink: #eceef2; --ink-2: #bcc2cc; --muted: #8f97a5; --line: #2c323c;
+  --accent: #aaa5f2; --accent-soft: #29274d; --focus: #aaa5f2;
+  --draft-ink: #f3c06a; --draft-bg: #33280f; --draft-line: #7a5a1c;
+  --g0: #3987e5; --g1: #d95926; --g2: #199e70; --g3: #7d8592;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 var(--step-0)/1.6 var(--font-body); }
+a { color: var(--accent); text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
+[hidden] { display: none !important; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; text-wrap: balance; line-height: 1.2; margin: 0; }
+p { margin: 0; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 20px; }
+.prose { max-width: var(--measure); display: grid; gap: .75rem; }
+.prose ul { margin: 0; padding-left: 1.2rem; display: grid; gap: .4rem; }
+.eyebrow { font: 600 var(--step--1)/1.3 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.mono { font-family: var(--font-data); font-size: .85em; }
+.todo { background: var(--draft-bg); color: var(--draft-ink); border-radius: 3px; padding: 0 .25em; }
+
+/* ribbon */
+.ribbon { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+.ribbon .wrap { display: flex; align-items: center; gap: 12px; min-height: 3.25rem; }
+.ribbon nav { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; flex: 1; min-width: 0; }
+.ribbon nav a { display: flex; gap: .4rem; align-items: baseline; padding: .45rem .7rem; border-radius: 999px; color: var(--ink-2);
+  text-decoration: none; white-space: nowrap; font-size: .9rem; }
+.ribbon nav a b { font: 600 .72rem var(--font-data); color: var(--muted); }
+.ribbon nav a[aria-current="true"] { background: var(--accent-soft); color: var(--ink); }
+.iconbtn { border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); border-radius: 999px; padding: .35rem .7rem;
+  font: inherit; font-size: .8rem; cursor: pointer; white-space: nowrap; }
+
+/* levels */
+.level { padding-block: 3.5rem 1rem; display: grid; gap: 1.5rem; }
+.level + .level { border-top: 1px solid var(--line); }
+.level-head { display: grid; gap: .5rem; max-width: var(--measure); }
+.level-head h2 { font-size: var(--step-3); }
+.level-head .lede { color: var(--ink-2); }
+.lvl { font-family: var(--font-data); color: var(--accent); }
+
+/* banners */
+.banners { display: grid; gap: .5rem; }
+.banner { border: 1px solid var(--draft-line); background: var(--draft-bg); color: var(--draft-ink); border-radius: var(--radius);
+  padding: .65rem .9rem; font-size: .92rem; }
+.banner strong { font-weight: 650; }
+.draft-tag { display: inline-block; font: 600 .7rem/1 var(--font-body); letter-spacing: .06em; text-transform: uppercase;
+  color: var(--draft-ink); background: var(--draft-bg); border: 1px solid var(--draft-line); border-radius: 999px; padding: .3rem .55rem; }
+
+/* level 1 */
+.hero { padding-block: 3rem 0; display: grid; gap: 1rem; }
+.hero h1 { font-size: clamp(2rem, 5vw, var(--step-4)); max-width: 22ch; }
+.hero .sub { font-size: var(--step-1); color: var(--ink-2); max-width: var(--measure); }
+.facts { display: flex; flex-wrap: wrap; gap: 0; border-block: 1px solid var(--line); }
+.fact { padding: .9rem 1.4rem .9rem 0; margin-right: 1.4rem; border-right: 1px solid var(--line); display: grid; gap: .1rem; }
+.fact:last-child { border-right: 0; }
+.fact .v { font: 600 var(--step-2)/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.fact .k { font-size: var(--step--1); color: var(--muted); }
+.glance { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 2rem; align-items: start; }
+@media (max-width: 760px) { .glance { grid-template-columns: 1fr; } }
+.summary { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.4rem 1.5rem; display: grid; gap: .8rem; }
+.summary .prose ul { gap: .65rem; font-size: 1.05rem; }
+.rq { display: grid; gap: .6rem; }
+.rq .prose { color: var(--ink-2); }
+
+/* group legend + people bar */
+.legend { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: var(--step--1); color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.sw { width: .75rem; height: .75rem; border-radius: 2px; display: inline-block; flex: none; }
+.pbar { display: grid; gap: .35rem; }
+.pbar .track { display: flex; gap: 2px; height: 10px; background: var(--sunken); border-radius: 3px; overflow: hidden; }
+.pbar .seg { height: 100%; }
+.pbar .seg:first-child { border-radius: 3px 0 0 3px; }
+.pbar .seg:last-child { border-radius: 0 3px 3px 0; }
+.pbar .cap { display: flex; flex-wrap: wrap; gap: .2rem .8rem; font-size: var(--step--1); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.pbar .cap b { color: var(--ink); font-weight: 650; }
+
+/* insights */
+.insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 1rem; }
+.insight { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.3rem 1.4rem; display: grid; gap: .9rem; align-content: start; min-width: 0; }
+.insight h3 { font-size: var(--step-2); }
+.insight .row { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.insight .impl { border-left: 2px solid var(--accent); padding-left: .9rem; display: grid; gap: .35rem; }
+.insight .impl .eyebrow { color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.chip { border: 1px solid var(--line); background: var(--bg); color: var(--ink-2); border-radius: 999px; padding: .2rem .65rem;
+  font: inherit; font-size: .8rem; cursor: pointer; text-decoration: none; display: inline-flex; gap: .35rem; align-items: center; }
+.chip:hover { border-color: var(--accent); color: var(--ink); }
+.chip .mono { color: var(--muted); }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+blockquote { margin: 0; padding: .1rem 0 .1rem 1rem; border-left: 2px solid var(--line); display: grid; gap: .3rem; }
+blockquote p { font-family: var(--font-display); font-size: 1.06rem; color: var(--ink); }
+blockquote footer, .meta { font-size: var(--step--1); color: var(--muted); display: flex; flex-wrap: wrap; gap: .2rem .6rem; align-items: center; }
+
+/* themes */
+.toolbar { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: end; }
+.field { display: grid; gap: .25rem; font-size: var(--step--1); color: var(--muted); min-width: 0; max-width: 100%; }
+.toolbar[role="search"] .field { flex: 1 1 11rem; }
+.toolbar[role="search"] .field:first-child { flex-basis: 16rem; }
+select, input[type="search"] { font: inherit; font-size: .9rem; color: var(--ink); background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: .4rem .55rem; width: 100%; max-width: 100%; min-width: 0; text-overflow: ellipsis; }
+#themeSort { width: auto; }
+.themes { display: grid; gap: .6rem; }
+details.theme { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+details.theme[open] { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+details.theme > summary { list-style: none; cursor: pointer; padding: 1rem 1.2rem; display: grid;
+  grid-template-columns: 3.2rem minmax(0, 1fr) minmax(0, 15rem); gap: .4rem 1rem; align-items: start; }
+details.theme > summary::-webkit-details-marker { display: none; }
+@media (max-width: 720px) { details.theme > summary { grid-template-columns: 2.6rem minmax(0, 1fr); } details.theme > summary .pbar { grid-column: 2; } }
+.tid { font: 600 .8rem/1.9 var(--font-data); color: var(--muted); }
+.tname { display: grid; gap: .25rem; }
+.tname h3 { font-size: var(--step-1); }
+.tname p { color: var(--ink-2); font-size: .93rem; }
+.strength { font-size: .72rem; font-weight: 650; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); }
+.strength::before { content: ""; display: inline-block; width: .55rem; height: .55rem; border-radius: 50%; margin-right: .35rem;
+  border: 1.5px solid var(--ink-2); vertical-align: 0; }
+.strength.Strong::before { background: var(--ink-2); }
+.strength.Moderate::before { background: linear-gradient(90deg, var(--ink-2) 50%, transparent 50%); }
+.tbody { padding: 0 1.2rem 1.2rem calc(1.2rem + 4.2rem); display: grid; gap: 1.1rem; }
+@media (max-width: 720px) { .tbody { padding-left: 1.2rem; } }
+.tbody h4 { margin: 0; font: 600 var(--step--1)/1.3 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tbody section { display: grid; gap: .6rem; }
+.counter blockquote { border-left-style: dashed; }
+.interp { background: var(--accent-soft); border-radius: var(--radius); padding: .8rem 1rem; display: grid; gap: .3rem; }
+.linkbtn { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; justify-self: start; }
+
+/* matrix */
+.scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: .85rem; }
+th, td { padding: .45rem .6rem; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+thead th { font-weight: 600; color: var(--ink-2); background: var(--surface); position: sticky; top: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.matrix td.c, .matrix th.c { text-align: center; padding-inline: .2rem; }
+.matrix th.c { font: 600 .72rem var(--font-data); writing-mode: vertical-rl; transform: rotate(180deg); padding-block: .5rem; }
+.dot { display: inline-block; width: .7rem; height: .7rem; border-radius: 50%; }
+.dot.counter { background: transparent !important; border: 2px solid; }
+.matrix td.tn { min-width: 14rem; }
+
+/* explorer */
+.chart { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.1rem; display: grid; gap: .6rem; position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart text { fill: var(--ink-2); font: 12px var(--font-body); }
+.chart .lbl { fill: var(--ink); }
+.chart .bar { cursor: pointer; }
+.chart .hit:hover + .bars rect, .chart g.row:hover rect.seg { opacity: .85; }
+.chart g.row.active text.lbl { font-weight: 700; fill: var(--accent); }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--bg); font-size: .8rem; padding: .4rem .6rem;
+  border-radius: 4px; max-width: 16rem; z-index: 5; }
+.count { font-size: .9rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.excerpts { display: grid; gap: .6rem; }
+.ex { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: .9rem 1.1rem; display: grid; gap: .55rem; min-width: 0; }
+.ex p.q { font-family: var(--font-display); font-size: 1.04rem; }
+.ex details summary { cursor: pointer; font-size: var(--step--1); color: var(--muted); }
+.ex details p { font-size: .88rem; color: var(--ink-2); margin-top: .3rem; }
+mark { background: color-mix(in srgb, var(--draft-line) 45%, transparent); color: inherit; border-radius: 2px; }
+.more { justify-self: center; }
+.btn { border: 1px solid var(--accent); color: var(--accent); background: var(--surface); border-radius: 999px; padding: .45rem 1rem; font: inherit; font-size: .9rem; cursor: pointer; }
+
+/* about */
+.about { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 1.5rem 2.5rem; }
+.about > section { display: grid; gap: .6rem; align-content: start; min-width: 0; }
+.about h3 { font-size: var(--step-1); }
+.wide { grid-column: 1 / -1; }
+footer.site { padding-block: 2.5rem 3rem; color: var(--muted); font-size: var(--step--1); border-top: 1px solid var(--line); margin-top: 2rem; display: grid; gap: .3rem; }
+
+@media print {
+  .ribbon, .toolbar, .more, .iconbtn, .linkbtn { display: none !important; }
+  body { background: #fff; color: #000; }
+  .level { break-inside: auto; padding-block: 1.5rem; }
+  details.theme, .insight, .ex { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<header class="ribbon">
+  <div class="wrap">
+    <nav aria-label="Report levels">
+      <a href="#glance"><b>1</b>At a glance</a>
+      <a href="#insights"><b>2</b>Insights</a>
+      <a href="#themes"><b>3</b>Themes</a>
+      <a href="#evidence"><b>4</b>Evidence</a>
+      <a href="#about"><b>5</b>About the research</a>
+    </nav>
+    <button class="iconbtn" id="themeToggle" type="button" aria-label="Colour theme">Theme: system</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="glance" aria-labelledby="h-glance">
+    <div class="hero">
+      <div class="banners" id="banners"></div>
+      <p class="eyebrow" id="kicker"></p>
+      <h1 id="h-glance"></h1>
+      <p class="sub" id="subtitle"></p>
+      <div class="facts" id="facts"></div>
+    </div>
+    <div class="level" style="border-top:0;padding-top:2rem">
+      <div class="glance">
+        <div class="summary" id="summary"></div>
+        <aside class="rq" id="rq"></aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="level" id="insights" aria-labelledby="h-insights">
+    <div class="level-head">
+      <p class="eyebrow"><span class="lvl">Level 2</span> · What we learned</p>
+      <h2 id="h-insights">Insights</h2>
+      <p class="lede">Each insight draws on one or more themes. Select a theme to see the evidence behind it.</p>
+    </div>
+    <div class="insights" id="insightList"></div>
+  </section>
+
+  <section class="level" id="themes" aria-labelledby="h-themes">
+    <div class="level-head">
+      <p class="eyebrow"><span class="lvl">Level 3</span> · Patterns across participants</p>
+      <h2 id="h-themes">Themes</h2>
+      <p class="lede" id="themesLede"></p>
+    </div>
+    <div class="toolbar">
+      <label class="field" for="themeSort">Sort by
+        <select id="themeSort">
+          <option value="people">Most participants</option>
+          <option value="diff">Biggest difference between groups</option>
+          <option value="id">Theme number</option>
+        </select>
+      </label>
+      <div class="legend" id="themeLegend"></div>
+      <button class="iconbtn" type="button" id="expandAll">Open all</button>
+    </div>
+    <div class="themes" id="themeList"></div>
+    <div style="display:grid;gap:.6rem">
+      <h3 style="font-size:var(--step-1)">Who each theme comes from</h3>
+      <p class="lede" style="color:var(--ink-2);max-width:var(--measure)">A filled dot means the participant gave supporting evidence; a ring means they said something that contradicts or complicates the theme.</p>
+      <div class="scroll"><table class="matrix" id="matrix"></table></div>
+    </div>
+    <div id="outlierBlock" style="display:grid;gap:.6rem"></div>
+  </section>
+
+  <section class="level" id="evidence" aria-labelledby="h-evidence">
+    <div class="level-head">
+      <p class="eyebrow"><span class="lvl">Level 4</span> · Codes and quotes</p>
+      <h2 id="h-evidence">Evidence explorer</h2>
+      <p class="lede">Every coded excerpt from the interviews. Filter by theme, tag, topic, group or participant, or search the words people used.</p>
+    </div>
+    <div class="chart" id="tagChart"></div>
+    <div class="toolbar" role="search">
+      <label class="field" for="fQ">Search<input type="search" id="fQ" placeholder="Words in quotes or notes"></label>
+      <label class="field" for="fTheme">Theme<select id="fTheme"></select></label>
+      <label class="field" for="fTag">Tag<select id="fTag"></select></label>
+      <label class="field" for="fTopic">Topic<select id="fTopic"></select></label>
+      <label class="field" for="fGroup">Group<select id="fGroup"></select></label>
+      <label class="field" for="fPid">Participant<select id="fPid"></select></label>
+      <button class="iconbtn" type="button" id="fReset">Clear filters</button>
+    </div>
+    <p class="count" id="exCount" aria-live="polite"></p>
+    <div class="excerpts" id="exList"></div>
+    <button class="btn more" type="button" id="exMore">Show more</button>
+  </section>
+
+  <section class="level" id="about" aria-labelledby="h-about">
+    <div class="level-head">
+      <p class="eyebrow"><span class="lvl">Level 5</span> · Method and data</p>
+      <h2 id="h-about">About the research</h2>
+    </div>
+    <div class="about" id="aboutBody"></div>
+  </section>
+
+  <footer class="site" id="footer"></footer>
+</main>
+
+<script>
+const DATA = /*__DATA__*/null;
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const h = (tag, attrs = {}, html = '') => { const e = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); e.innerHTML = html; return e; };
+  const M = DATA.meta, G = DATA.groups, NP = DATA.participants.length;
+  const gcol = name => { const g = G.find(x => x.name === name); return `var(--g${g ? g.slot : 3})`; };
+  const groupOf = Object.fromEntries(DATA.participants.map(p => [p.id, p.group]));
+  const ex = Object.fromEntries(DATA.excerpts.map(e => [e.id, e]));
+  const themeById = Object.fromEntries(DATA.themes.map(t => [t.id, t]));
+  const multi = G.length > 1;
+  const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+  const DRAFT = '<span class="draft-tag" title="Written by the AI; not yet reviewed by the researcher">Draft · not reviewed by researcher</span>';
+
+  /* ---------- shared pieces ---------- */
+  function peopleBar(people, total = NP) {
+    const by = G.map(g => ({ g, n: people.filter(p => groupOf[p] === g.name).length }));
+    const segs = by.filter(b => b.n).map(b => `<span class="seg" style="width:${(b.n / total) * 100}%;background:var(--g${b.g.slot})" title="${esc(b.g.name)}: ${b.n}"></span>`).join('');
+    const cap = multi ? by.map(b => `<span><span class="sw" style="background:var(--g${b.g.slot})"></span> ${esc(b.g.name)} <b>${b.n}</b>/${b.g.n}</span>`).join('') : '';
+    return `<div class="pbar" role="img" aria-label="${people.length} of ${total} participants${multi ? ': ' + by.map(b => `${b.n} ${b.g.name}`).join(', ') : ''}">
+      <div class="cap"><span><b>${people.length}</b> of ${total} participants</span>${cap}</div>
+      <div class="track">${segs}</div></div>`;
+  }
+  function quote(id, extra = '') {
+    const e = ex[id]; if (!e) return '';
+    return `<blockquote><p>“${esc(e.text)}”</p><footer><span class="mono">${esc(e.id)}</span><span>${esc(e.pid)}</span>${multi ? `<span><span class="sw" style="background:${gcol(e.group)}"></span> ${esc(e.group)}</span>` : ''}${extra}</footer></blockquote>`;
+  }
+  const legendHTML = () => multi ? G.map(g => `<span><span class="sw" style="background:var(--g${g.slot})"></span>${esc(g.name)} (${g.n})</span>`).join('') : '';
+
+  /* ---------- level 1 ---------- */
+  document.title = M.title;
+  $('#h-glance').textContent = M.title;
+  $('#subtitle').textContent = M.subtitle;
+  $('#kicker').textContent = ['Research report', M.round, M.date].filter(Boolean).join(' · ');
+  const banners = [];
+  if (M.draftItems.length) banners.push(`<div class="banner" role="note"><strong>Draft for review.</strong> ${plural(M.draftItems.length, 'section was', 'sections were')} drafted by AI and ${M.draftItems.length === 1 ? 'has' : 'have'} not been reviewed by the researcher. ${M.draftItems.length === 1 ? 'It is' : 'Each is'} marked “Draft · not reviewed by researcher”. Treat drafts as a starting point, not as findings.</div>`);
+  if (M.candidateThemes) banners.push(`<div class="banner" role="note"><strong>Candidate themes.</strong> Themes in this report have not yet been reviewed and confirmed by the researcher.</div>`);
+  $('#banners').innerHTML = banners.join('');
+  const facts = [[NP, 'participants'], ...G.filter(() => multi).map(g => [g.n, g.name.toLowerCase()]), [DATA.themes.length, 'themes'], [DATA.excerpts.length, 'coded excerpts']];
+  $('#facts').innerHTML = facts.map(([v, k]) => `<div class="fact"><span class="v">${v}</span><span class="k">${esc(k)}</span></div>`).join('');
+  const S = DATA.sections;
+  const sum = S['executive summary'];
+  $('#summary').innerHTML = `<div class="row" style="display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;align-items:center">
+      <p class="eyebrow"><span class="lvl">Level 1</span> · At a glance</p>${sum && sum.status === 'draft' ? DRAFT : ''}</div>
+    <h2 style="font-size:var(--step-2)">Summary</h2><div class="prose">${sum ? sum.html : ''}</div>`;
+  const rq = S['research questions'];
+  $('#rq').innerHTML = (rq ? `<p class="eyebrow">Research questions</p><div class="prose">${rq.html}</div>` : '') +
+    (M.audience ? `<p class="eyebrow" style="margin-top:.6rem">Written for</p><p style="color:var(--ink-2)">${esc(M.audience)}</p>` : '') +
+    (multi ? `<p class="eyebrow" style="margin-top:.6rem">Groups compared</p><div class="legend">${legendHTML()}</div>` : '');
+
+  /* ---------- level 2 ---------- */
+  $('#insightList').innerHTML = DATA.insights.map(i => {
+    const people = [...new Set(i.themes.flatMap(t => themeById[t] ? themeById[t].people : []))].sort();
+    const q = i.quotes[0] || (themeById[i.themes[0]] || { keyQuotes: [] }).keyQuotes[0];
+    return `<article class="insight" id="insight-${i.id}">
+      <div class="row"><p class="eyebrow">Insight</p>${i.status === 'draft' ? DRAFT : ''}</div>
+      <h3>${esc(i.title)}</h3>
+      <div class="prose">${i.html}</div>
+      ${i.implications ? `<div class="impl"><p class="eyebrow">What this means</p><div class="prose">${i.implications}</div></div>` : ''}
+      ${q ? quote(q) : ''}
+      <div style="display:grid;gap:.5rem"><p class="eyebrow">Based on</p>${peopleBar(people)}
+        <div class="chips">${i.themes.map(t => `<a class="chip tref" href="#theme-${t}" data-theme="${t}"><span class="mono">${t}</span>${esc(themeById[t].name)}</a>`).join('')}</div></div>
+    </article>`;
+  }).join('');
+
+  /* ---------- level 3 ---------- */
+  const strong = DATA.themes.filter(t => t.strength === 'Strong').length;
+  $('#themesLede').textContent = `${plural(DATA.themes.length, 'theme', 'themes')} found across the interviews. Strength shows how many participants voiced a pattern (Strong: 6 or more, Moderate: 3 to 5, Thin: 2), not how common it is in the wider population. ${strong} are strong.`;
+  $('#themeLegend').innerHTML = legendHTML();
+  function diff(t) {
+    if (G.length < 2) return 0;
+    const share = g => t.people.filter(p => groupOf[p] === g.name).length / g.n;
+    return Math.abs(share(G[0]) - share(G[1]));
+  }
+  function renderThemes() {
+    const mode = $('#themeSort').value;
+    const list = [...DATA.themes].sort((a, b) => mode === 'id' ? a.id.localeCompare(b.id) : mode === 'diff' ? diff(b) - diff(a) || b.people.length - a.people.length : b.people.length - a.people.length || a.id.localeCompare(b.id));
+    const open = new Set([...document.querySelectorAll('details.theme[open]')].map(d => d.dataset.id));
+    $('#themeList').innerHTML = list.map(t => `<details class="theme" id="theme-${t.id}" data-id="${t.id}" ${open.has(t.id) ? 'open' : ''}>
+      <summary><span class="tid">${t.id}</span>
+        <span class="tname"><h3>${esc(t.name)}</h3><p>${esc(t.description)}</p><span class="strength ${t.strength}">${t.strength}</span></span>
+        ${peopleBar(t.people)}</summary>
+      <div class="tbody">
+        ${t.interpretation ? `<div class="interp"><p class="eyebrow">Researcher's interpretation</p><p>${esc(t.interpretation)}</p>${t.researcherImplications ? `<p><strong>Implications:</strong> ${esc(t.researcherImplications)}</p>` : ''}</div>` : ''}
+        <section><h4>What people said</h4>${t.keyQuotes.map(id => quote(id)).join('')}</section>
+        <section class="counter"><h4>What complicates it</h4><p style="color:var(--ink-2)">${esc(t.counterSummary)}</p>${t.counter.slice(0, 2).map(id => quote(id)).join('')}</section>
+        <section><h4>Codes most often applied</h4><div class="chips">${t.tags.map(g => `<button class="chip" type="button" data-filter-tag="${esc(g)}">${esc(g)}</button>`).join('')}</div></section>
+        <button class="linkbtn" type="button" data-filter-theme="${t.id}">See all ${plural(t.supporting.length, 'excerpt', 'excerpts')} behind this theme</button>
+      </div></details>`).join('');
+  }
+  $('#themeSort').addEventListener('change', renderThemes);
+  renderThemes();
+  $('#expandAll').addEventListener('click', e => {
+    const all = [...document.querySelectorAll('details.theme')]; const open = !all.every(d => d.open);
+    all.forEach(d => d.open = open); e.target.textContent = open ? 'Close all' : 'Open all';
+  });
+  // matrix
+  const pidsByGroup = G.flatMap(g => DATA.participants.filter(p => p.group === g.name).map(p => p.id));
+  $('#matrix').innerHTML = `<thead><tr><th>Theme</th>${pidsByGroup.map(p => `<th class="c" title="${esc(groupOf[p])}"><span class="sw" style="background:${gcol(groupOf[p])};writing-mode:horizontal-tb;margin-bottom:.3rem"></span> ${esc(p)}</th>`).join('')}<th class="num">People</th></tr></thead><tbody>` +
+    DATA.themes.map(t => `<tr><td class="tn"><a class="tref" href="#theme-${t.id}" data-theme="${t.id}"><span class="mono">${t.id}</span></a> ${esc(t.name)}</td>${pidsByGroup.map(p => {
+      const s = t.people.includes(p), c = t.counterPeople.includes(p);
+      const label = s && c ? 'supports and complicates' : s ? 'supports' : c ? 'complicates' : '';
+      return `<td class="c" ${label ? `title="${esc(p)} ${label}"` : ''}>${s ? `<span class="dot" style="background:${gcol(groupOf[p])}" aria-label="${label}"></span>` : c ? `<span class="dot counter" style="border-color:${gcol(groupOf[p])}" aria-label="${label}"></span>` : ''}</td>`;
+    }).join('')}<td class="num">${t.people.length}</td></tr>`).join('') + '</tbody>';
+  if (DATA.outliers.length) {
+    $('#outlierBlock').innerHTML = `<h3 style="font-size:var(--step-1)">One-off observations</h3>
+      <p style="color:var(--ink-2);max-width:var(--measure)">Raised by one participant only, so not a theme, but possibly worth following up.</p>
+      <div class="excerpts">${DATA.outliers.map(o => `<div class="ex"><p>${esc(o.observation)}</p><div class="chips">${o.excerpts.map(id => `<button class="chip" type="button" data-show-excerpt="${id}"><span class="mono">${id}</span></button>`).join('')}</div></div>`).join('')}</div>`;
+  }
+
+  /* ---------- level 4 ---------- */
+  const F = { q: '', theme: '', tag: '', topic: '', group: '', pid: '' };
+  let limit = 30;
+  const uniq = arr => [...new Set(arr)];
+  const opt = (sel, items, all) => { sel.innerHTML = `<option value="">${all}</option>` + items.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join(''); };
+  opt($('#fTheme'), DATA.themes.map(t => [t.id, `${t.id} ${t.name}`]), 'All themes');
+  opt($('#fTag'), DATA.codebook.map(c => [c.tag, c.tag]), 'All tags');
+  opt($('#fTopic'), uniq(DATA.excerpts.map(e => e.topic)).map(t => [t, t]), 'All topics');
+  opt($('#fGroup'), G.map(g => [g.name, g.name]), 'All groups');
+  opt($('#fPid'), DATA.participants.map(p => [p.id, multi ? `${p.id} (${p.group})` : p.id]), 'All participants');
+  if (!multi) $('#fGroup').closest('label').hidden = true;
+  const match = e => (!F.theme || e.themes.includes(F.theme)) && (!F.tag || e.tags.includes(F.tag)) && (!F.topic || e.topic === F.topic)
+    && (!F.group || e.group === F.group) && (!F.pid || e.pid === F.pid)
+    && (!F.q || (e.text + ' ' + e.note).toLowerCase().includes(F.q.toLowerCase()));
+  const hl = s => { const t = esc(s); if (!F.q) return t; const q = esc(F.q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); return t.replace(new RegExp(q, 'gi'), m => `<mark>${m}</mark>`); };
+  function renderExcerpts() {
+    const rows = DATA.excerpts.filter(match);
+    const people = uniq(rows.map(e => e.pid)).length;
+    $('#exCount').textContent = `Showing ${Math.min(limit, rows.length)} of ${plural(rows.length, 'matching excerpt', 'matching excerpts')} (from ${plural(people, 'participant', 'participants')}). ${DATA.excerpts.length} excerpts in total.`;
+    $('#exList').innerHTML = rows.slice(0, limit).map(e => `<article class="ex" id="ex-${e.id}">
+      <p class="q">“${hl(e.text)}”</p>
+      <div class="meta"><span class="mono">${e.id}</span><span>${esc(e.pid)}</span>${multi ? `<span><span class="sw" style="background:${gcol(e.group)}"></span> ${esc(e.group)}</span>` : ''}<span>${esc(e.topic)}</span></div>
+      <div class="chips">${e.tags.map(t => `<button class="chip" type="button" data-filter-tag="${esc(t)}" aria-pressed="${F.tag === t}">${esc(t)}</button>`).join('')}
+        ${e.themes.map(t => `<a class="chip tref" href="#theme-${t}" data-theme="${t}"><span class="mono">${t}</span>${esc(themeById[t].name)}</a>`).join('')}</div>
+      ${e.note ? `<details><summary>Coding note</summary><p>${hl(e.note)}</p></details>` : ''}</article>`).join('') || '<p class="count">No excerpts match these filters. Clear a filter to see more.</p>';
+    $('#exMore').hidden = rows.length <= limit;
+    renderChart(rows);
+  }
+  function setFilter(k, v) { F[k] = v; const id = { q: 'fQ', theme: 'fTheme', tag: 'fTag', topic: 'fTopic', group: 'fGroup', pid: 'fPid' }[k]; $('#' + id).value = v; limit = 30; renderExcerpts(); }
+  ['q', 'theme', 'tag', 'topic', 'group', 'pid'].forEach(k => {
+    const el = $('#' + { q: 'fQ', theme: 'fTheme', tag: 'fTag', topic: 'fTopic', group: 'fGroup', pid: 'fPid' }[k]);
+    el.addEventListener(k === 'q' ? 'input' : 'change', () => { F[k] = el.value; limit = 30; renderExcerpts(); });
+  });
+  $('#fReset').addEventListener('click', () => { Object.keys(F).forEach(k => setFilter(k, '')); });
+  $('#exMore').addEventListener('click', () => { limit += 30; renderExcerpts(); });
+
+  // chart: tags by number of participants, split by group, for the current filter
+  function renderChart(rows) {
+    const box = $('#tagChart');
+    const tags = DATA.codebook.map(c => c.tag);
+    const data = tags.map(t => { const ps = uniq(rows.filter(e => e.tags.includes(t)).map(e => e.pid)); return { t, ps, by: G.map(g => ps.filter(p => groupOf[p] === g.name).length) }; })
+      .filter(d => d.ps.length).sort((a, b) => b.ps.length - a.ps.length);
+    const filtered = Object.values(F).some(Boolean);
+    const head = `<div style="display:flex;justify-content:space-between;gap:.5rem 1rem;flex-wrap:wrap;align-items:baseline">
+      <h3 style="font-size:var(--step-1)">How many participants each code appears for${filtered ? ' (current filter)' : ''}</h3><div class="legend">${legendHTML()}</div></div>
+      <p class="count" style="font-size:var(--step--1)">Select a bar to filter the excerpts by that code.</p>`;
+    if (!data.length) { box.innerHTML = head + '<p class="count">No codes for the current filter.</p>'; return; }
+    // draw at the container's real width so text stays 12px on phones
+    const W = Math.max(280, Math.round(box.clientWidth - 36)), labelW = Math.min(150, Math.round(W * 0.38)), right = 30,
+      rowH = 24, top = 22, bar = 14, max = NP, plotW = W - labelW - right;
+    const x = v => (v / max) * plotW;
+    const ticks = [0, Math.round(max / 2), max];
+    let svg = `<svg viewBox="0 0 ${W} ${top + data.length * rowH + 6}" role="img" aria-label="Number of participants per code">`;
+    ticks.forEach(v => { svg += `<line x1="${labelW + x(v)}" x2="${labelW + x(v)}" y1="${top - 6}" y2="${top + data.length * rowH}" stroke="var(--line)" stroke-width="1"/><text x="${labelW + x(v)}" y="${top - 10}" text-anchor="middle">${v}</text>`; });
+    data.forEach((d, i) => {
+      const y = top + i * rowH; let cx = labelW;
+      svg += `<g class="row bar${F.tag === d.t ? ' active' : ''}" data-tag="${esc(d.t)}" tabindex="0" role="button" aria-label="${esc(d.t)}: ${d.ps.length} participants${multi ? ', ' + G.map((g, j) => `${d.by[j]} ${g.name}`).join(', ') : ''}. Filter by this code.">
+        <rect x="0" y="${y}" width="${W}" height="${rowH}" fill="transparent"/>
+        <text class="lbl" x="${labelW - 10}" y="${y + rowH / 2 + 4}" text-anchor="end">${esc(d.t)}</text>`;
+      d.by.forEach((n, j) => { if (!n) return; const w = x(n) - 2; svg += `<rect class="seg" x="${cx}" y="${y + (rowH - bar) / 2}" width="${Math.max(w, 1)}" height="${bar}" rx="2" fill="var(--g${G[j].slot})"/>`; cx += x(n); });
+      svg += `<text x="${labelW + x(d.ps.length) + 6}" y="${y + rowH / 2 + 4}">${d.ps.length}</text></g>`;
+    });
+    svg += '</svg>';
+    box.innerHTML = head + svg + '<div class="tip" hidden></div>';
+    const tip = box.querySelector('.tip');
+    box.querySelectorAll('g.row').forEach(g => {
+      const d = data.find(x => x.t === g.dataset.tag);
+      g.addEventListener('mousemove', ev => {
+        const r = box.getBoundingClientRect();
+        tip.innerHTML = `<strong>${esc(d.t)}</strong><br>${d.ps.length} of ${NP} participants${multi ? '<br>' + G.map((gg, j) => `${esc(gg.name)}: ${d.by[j]} of ${gg.n}`).join('<br>') : ''}`;
+        tip.hidden = false; tip.style.left = Math.min(ev.clientX - r.left + 14, r.width - 200) + 'px'; tip.style.top = (ev.clientY - r.top + 14) + 'px';
+      });
+      g.addEventListener('mouseleave', () => { tip.hidden = true; });
+      const act = () => setFilter('tag', F.tag === d.t ? '' : d.t);
+      g.addEventListener('click', act);
+      g.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); act(); } });
+    });
+  }
+  renderExcerpts();
+  let lastW = 0, rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { const w = $('#tagChart').clientWidth; if (w !== lastW) { lastW = w; renderChart(DATA.excerpts.filter(match)); } }, 150); });
+
+  /* ---------- level 5 ---------- */
+  const sec = (k, cls = '') => S[k] ? `<section class="${cls}"><div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap"><h3>${esc(S[k].title)}</h3>${S[k].status === 'draft' ? DRAFT : ''}</div><div class="prose">${S[k].html}</div></section>` : '';
+  const hasCtx = DATA.participants.some(p => p.context);
+  $('#aboutBody').innerHTML = sec('method') + sec('quality and anonymisation') + sec('limitations') + sec('next steps') +
+    `<section class="wide"><h3>Participants</h3><div class="scroll"><table><thead><tr><th>Participant</th>${multi ? '<th>Group</th>' : ''}${hasCtx ? '<th>Context</th>' : ''}<th class="num">Excerpts</th></tr></thead><tbody>${DATA.participants.map(p => `<tr><td class="mono">${esc(p.id)}</td>${multi ? `<td><span class="sw" style="background:${gcol(p.group)}"></span> ${esc(p.group)}</td>` : ''}${hasCtx ? `<td>${esc(p.context)}</td>` : ''}<td class="num"><button class="linkbtn" type="button" data-filter-pid="${esc(p.id)}">${DATA.excerpts.filter(e => e.pid === p.id).length}</button></td></tr>`).join('')}</tbody></table></div></section>
+    <section class="wide"><h3>Codebook</h3><p style="color:var(--ink-2);max-width:var(--measure)">The codes used to tag each excerpt. Select a code to see its excerpts.</p><div class="scroll"><table><thead><tr><th>Code</th><th>Definition</th><th class="num">Participants</th><th class="num">Excerpts</th></tr></thead><tbody>${DATA.codebook.map(c => `<tr><td><button class="chip" type="button" data-filter-tag="${esc(c.tag)}">${esc(c.tag)}</button></td><td>${esc(c.definition)}</td><td class="num">${c.people}</td><td class="num">${c.excerpts}</td></tr>`).join('')}</tbody></table></div></section>`;
+  $('#footer').innerHTML = `<p>${esc(M.title)}${M.contact ? ' · Contact: ' + esc(M.contact) : ''}</p><p>Generated ${esc(M.generated)} from ${M.sources.map(esc).join(', ')}. Quotes are verbatim from anonymised transcripts; names, places and other identifying details are replaced with [bracketed] labels.</p>`;
+
+  /* ---------- navigation and cross-links ---------- */
+  function openTheme(id, scroll = true) {
+    const d = document.getElementById('theme-' + id); if (!d) return;
+    d.open = true; if (scroll) d.scrollIntoView({ block: 'start' });
+  }
+  function goEvidence() { document.getElementById('evidence').scrollIntoView({ block: 'start' }); }
+  document.addEventListener('click', ev => {
+    const a = ev.target.closest('[data-theme].tref'); if (a) { ev.preventDefault(); history.replaceState(null, '', '#theme-' + a.dataset.theme); openTheme(a.dataset.theme); return; }
+    const ft = ev.target.closest('[data-filter-theme]'); if (ft) { Object.keys(F).forEach(k => F[k] = ''); document.querySelectorAll('.toolbar[role=search] select, #fQ').forEach(s => s.value = ''); setFilter('theme', ft.dataset.filterTheme); goEvidence(); return; }
+    const fg = ev.target.closest('[data-filter-tag]'); if (fg) { setFilter('tag', fg.dataset.filterTag); if (!ev.target.closest('#evidence')) goEvidence(); return; }
+    const fp = ev.target.closest('[data-filter-pid]'); if (fp) { setFilter('pid', fp.dataset.filterPid); goEvidence(); return; }
+    const se = ev.target.closest('[data-show-excerpt]'); if (se) { Object.keys(F).forEach(k => setFilter(k, '')); setFilter('q', ''); const e = ex[se.dataset.showExcerpt]; setFilter('pid', e.pid); limit = 999; renderExcerpts(); goEvidence(); setTimeout(() => { const el = document.getElementById('ex-' + e.id); if (el) el.scrollIntoView({ block: 'center' }); }, 50); }
+  });
+  function fromHash() { const m = location.hash.match(/^#theme-(T\d+)$/); if (m) openTheme(m[1]); }
+  window.addEventListener('hashchange', fromHash); fromHash();
+  // ribbon: mark the level in view
+  const links = [...document.querySelectorAll('.ribbon nav a')];
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) links.forEach(l => l.setAttribute('aria-current', String(l.getAttribute('href') === '#' + e.target.id))); }), { rootMargin: '-40% 0px -55% 0px' });
+  ['glance', 'insights', 'themes', 'evidence', 'about'].forEach(id => io.observe(document.getElementById(id)));
+  // theme toggle: system -> light -> dark
+  const modes = ['system', 'light', 'dark'];
+  let mode = document.documentElement.getAttribute('data-theme') || 'system';
+  try { mode = localStorage.getItem('report-theme') || mode; } catch (e) {}
+  const applyMode = () => { if (mode === 'system') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', mode); $('#themeToggle').textContent = 'Theme: ' + mode; };
+  applyMode();
+  $('#themeToggle').addEventListener('click', () => { mode = modes[(modes.indexOf(mode) + 1) % 3]; try { localStorage.setItem('report-theme', mode); } catch (e) {} applyMode(); });
+  window.addEventListener('beforeprint', () => document.querySelectorAll('details').forEach(d => d.open = true));
+})();
+</script>
+</body>
+</html>

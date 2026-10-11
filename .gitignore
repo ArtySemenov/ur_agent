@@ -1,0 +1,11 @@
+# Excel / Office temporary lock files
+~$*
+
+# Python
+__pycache__/
+*.pyc
+
+# OS clutter
+.DS_Store
+Thumbs.db
+desktop.ini
